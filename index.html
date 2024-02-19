@@ -70,12 +70,10 @@
             var api = document.getElementById('api').value;
             var relay = document.getElementById('relay').value;
             var jsonData = {
-                "License": {
-                    "host": host,
-                    "key": key,
-                    "api": api,
-                    "relay": relay
-                }
+                "host": host,
+                "key": key,
+                "api": api,
+                "relay": relay
             };
             var base64Encoded = btoa(JSON.stringify(jsonData))
                 .replace(/\+/g, '-')
