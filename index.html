@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RustDesk File Name Config Generator</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans, Droid Sans, sans-serif;
+            margin: 40px;
+        }
+        div {
+            width: calc(100% / 3);
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: calc(100% / 3);
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        textarea {
+            width: calc(100% / 3);
+            padding: 8px;
+            resize: none;
+        }
+        button {
+            padding: 10px;
+            background-color: #024eff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: .5rem;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>RustDesk File Name Config Generator</h2>
+    <div>
+        This form conveniently generates a file name for RustDesk.exe that contains the encoded settings defined here. More information on how this works can be found <a href="https://RustDesk.com/docs/en/self-host/client-configuration/#4-put-config-in-RustDeskexe-file-name-windows-only">here</a>.
+    </div>
+    <form id="myForm">
+        <label for="host">ID Server:</label>
+        <input type="text" id="host" name="host" oninput="generateAndDisplay()">
+
+        <label for="relay">Relay Server</label>
+        <input type="text" id="relay" name="relay" oninput="generateAndDisplay()">
+
+        <label for="api">API Server:</label>
+        <input type="text" id="api" name="api" oninput="generateAndDisplay()">
+
+        <label for="key">Key:</label>
+        <input type="text" id="key" name="key" oninput="generateAndDisplay()">
+    </form>
+
+    <h2>Result:</h2>
+    <textarea type="text" id="result" rows="4" readonly></textarea>
+
+    <button onclick="copyToClipboard()">Copy</button>
+
+    <script>
+        function generateAndDisplay() {
+            var host = document.getElementById('host').value;
+            var key = document.getElementById('key').value;
+            var api = document.getElementById('api').value;
+            var relay = document.getElementById('relay').value;
+            var jsonData = {
+                "License": {
+                    "host": host,
+                    "key": key,
+                    "api": api,
+                    "relay": relay
+                }
+            };
+            var base64Encoded = btoa(JSON.stringify(jsonData))
+                .replace(/\+/g, '-')
+                .replace(/\//g, '_')
+                .replace(/=+$/, '');
+            var reversedString = base64Encoded.split('').reverse().join('');
+            var filename = `RustDesk--${reversedString}--.exe`;
+            document.getElementById('result').value = filename;
+        }
+
+        function copyToClipboard() {
+            document.getElementById('result').select();
+            document.execCommand('copy');
+        }
+    </script>
+
+</body>
+</html>
