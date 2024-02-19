@@ -80,7 +80,7 @@
                 .replace(/\//g, '_')
                 .replace(/=+$/, '');
             var reversedString = base64Encoded.split('').reverse().join('');
-            var filename = `RustDesk--${reversedString}--.exe`;
+            var filename = `rustdesk--${reversedString}--.exe`;
             document.getElementById('result').value = filename;
         }
 
